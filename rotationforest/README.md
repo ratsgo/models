@@ -1,6 +1,6 @@
 # advanced Rotation Forest
 
-고려대학교 산업경영공학부 [데이터사이언스&비즈니스어낼리틱스 연구실](http://dsba.korea.ac.kr)에서 만든 Rotation Forest 함수입니다. R에서 작동하며 **rotationforest.R** 파일을 열어서 쓰면 됩니다. 사용법은 다음과 같고요, 자세한 내용은 **[이곳](https://ratsgo.github.io/machine%20learning/2017/03/17/tree/)**을 참고하시기 바랍니다.
+고려대학교 산업경영공학부 [데이터사이언스&비즈니스어낼리틱스 연구실](http://dsba.korea.ac.kr)에서 만든 Rotation Forest 함수입니다. R에서 작동하며 **rotationforest.R** 파일을 열어서 쓰면 됩니다. 사용법은 다음과 같고요, 자세한 내용은 [이곳](https://ratsgo.github.io/machine%20learning/2017/03/17/tree/)을 참고하시기 바랍니다.
 
 ```R
 Fit <- rotationForest(data, k, numTrees, bootstrapRate, type)

@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 from collections import defaultdict
+import re
+import operator
+
 
 ####################################################
 # loading function                                 #
@@ -22,6 +25,7 @@ def loading_data(data_path, eng=True, num=True, punc=False):
             title.append(tmptitle)
             contents.append(tmpcontents)
     return title, contents
+
 
 def make_dict_all_cut(contents, minlength, maxlength, jamo_delete=False):
     dict = defaultdict(lambda: [])
@@ -58,10 +62,10 @@ def make_dict_all_cut(contents, minlength, maxlength, jamo_delete=False):
         for word in words:
             word_to_ix[word] = idx
     print('컨텐츠 갯수 : %s, 단어 갯수 : %s'
-                  % (len(contents), len(ix_to_word)))
+          % (len(contents), len(ix_to_word)))
     return word_to_ix, ix_to_word
 
-  
+
 ####################################################
 # making input function                            #
 ####################################################
@@ -94,6 +98,7 @@ def make_inputs(rawinputs, rawtargets, word_to_ix, encoder_size, decoder_size, s
         target_weights.append(list(tmp_targets_weight))
     return encoder_input, decoder_input, targets, target_weights
 
+
 ####################################################
 # doclength check function                         #
 ####################################################
@@ -109,7 +114,7 @@ def check_doclength(docs, sep=True):
             max_document_length = document_length
     return max_document_length
 
-  
+
 ####################################################
 # making batch function                            #
 ####################################################
@@ -146,6 +151,7 @@ doublespace_pattern = re.compile('\s+')
 repeatchars_pattern = re.compile('(\w)\\1{3,}')
 title_pattern = re.compile('\[\D+\]|\[\S+\]')
 
+
 def normalize(doc, english=False, number=False, punctuation=False, title=True, remove_repeat=0):
     if remove_repeat > 0:
         doc = repeatchars_pattern.sub('\\1' * remove_repeat, doc)
@@ -159,7 +165,7 @@ def normalize(doc, english=False, number=False, punctuation=False, title=True, r
         i = ord(c)
 
         if (c == ' ') or (is_korean(i)) or (is_jaum(i)) or (is_moum(i)) or (english and is_english(i)) or (
-            number and is_number(i)) or (punctuation and is_punctuation(i)):
+                number and is_number(i)) or (punctuation and is_punctuation(i)):
             f += c
         else:
             f += ' '
@@ -171,25 +177,31 @@ def is_korean(i):
     i = to_base(i)
     return (kor_begin <= i <= kor_end) or (jaum_begin <= i <= jaum_end) or (moum_begin <= i <= moum_end)
 
+
 def is_number(i):
     i = to_base(i)
     return (i >= 48 and i <= 57)
+
 
 def is_english(i):
     i = to_base(i)
     return (i >= 97 and i <= 122) or (i >= 65 and i <= 90)
 
+
 def is_punctuation(i):
     i = to_base(i)
     return (i == 33 or i == 34 or i == 39 or i == 44 or i == 46 or i == 63 or i == 96)
+
 
 def is_jaum(i):
     i = to_base(i)
     return (jaum_begin <= i <= jaum_end)
 
+
 def is_moum(i):
     i = to_base(i)
     return (moum_begin <= i <= moum_end)
+
 
 def to_base(c):
     if type(c) == str:
